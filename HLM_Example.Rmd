@@ -1,0 +1,26 @@
+---
+title: "HLM_Example"
+author: "ejwilliams"
+date: "September 7, 2017"
+output: pdf_document
+---
+
+# Assignment 1 - Picking a Data Set
+
+**Prompt**: 
+Choose a data set that you would like to work with for your course project. Describe the hierarchy of the data (for example, Level 1: students, Level 2: schools, or Level 1: individuals, Level 2: households, or Level 1: repeated measures, Level 2: individuals). 
+
+Then, conceptualize a hierarchical linear model by a) formulating a research question, b) identifying a response variable and c) proposing a minimum of two Level 1 predictor variables and two Level 2 predictors of your response variable.
+
+For your assignment submit via Moodle:
+
+1) A sentence or two describing your research question
+
+2) The name and a brief description of the hierarchy of your data set,
+
+3) A brief definition, including the distribution (quantitative or binary), of your response variable,
+
+4) A brief definition, including the distributions (quantitative or categorical), of your Level 1 and Level 2 predictor variables.
+
+**Response** : 
+1) 
