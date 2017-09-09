@@ -1,8 +1,6 @@
 # NIH Work, Family and Health Studies	
 
-Data Analysis by @lacoperon (AKA Elliot Williams, Wes '18)
-
-
+Data Analysis by @lacoperon (AKA Elliot Williams, Wesleyan '18)
 
 #### The Dataset
 
