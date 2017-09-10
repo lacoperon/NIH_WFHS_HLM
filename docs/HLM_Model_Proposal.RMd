@@ -1,5 +1,0 @@
-# Model Explanation / Outline
-
-TODO : Add markdown explaining the HLM Model I'm testing.
-
-Can't currently do so because Moodle is down, but oh well.
