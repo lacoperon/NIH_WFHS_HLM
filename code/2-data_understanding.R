@@ -15,49 +15,67 @@ library(ggplot2)
 # Initial Plotting of the Response Variable, EM_DIST1,
 # which measures how often employees feel so sad that nothing can cheer them up
 
-ds <- wfhs[c("EM_DIST1R","WGID")]
+dsi <- wfhs[c("WGID","EM_DIST1R", "WM_WFC10R","WM_CWH1R")]
+
 resToValueEM <- c("(1) NONE OF THE TIME"     = 1,
                   "(2) A LITTLE OF THE TIME" = 2,
                   "(3) SOME OF THE TIME"     = 3,
                   "(4) MOST OF THE TIME"     = 4,
                   "(5) ALL OF THE TIME"      = 5)
 
-ds$EM_DIST1R <- as.numeric(revalue(ds$EM_DIST1R, resToValueEM))
+resToValueAgreeance <- c("(1) STRONGLY DISAGREE"= 1, 
+                         "(2) DISAGREE"         = 2,
+                         "(3) NEITHER"          = 3,
+                         "(4) AGREE"            = 4,
+                         "(5) STRONGLY AGREE"   = 5)
 
-#Gets count of each value within EM_DIST1
-emdist1_counts <- table(ds$EM_DIST1R)
-plot(emdist1_counts)
+
+dsi$EM_DIST1R <- as.numeric(revalue(dsi$EM_DIST1R, resToValueEM))
+
+# Histogram of counts of various labels among individuals
+qplot(dsi$EM_DIST1R, xlab="Individual Distress Rankings", ylab="Count of Rank", bins=5)
 
 #Strongly skewed right, which is to be expected
 # (you wouldn't expect most employees to be depressed, let alone reporting it)
 
 # Grouping by workgroup -- trying to see the average scores for each workgroup
 
-mean <- aggregate(ds["EM_DIST1R"], list(ds$WGID), mean)
-qplot(mean$EM_DIST1R, xlim=c(1,5), 
+wgAgg <- aggregate(dsi["EM_DIST1R"], list(dsi$WGID), mean)
+qplot(wgAgg$EM_DIST1R, xlim=c(1,5), 
       xlab = "Average Emotional Distress of Workgroup",
       ylab = "Number of workgroups in each bin",
       binwidth=0.05)
+
 # ---- Level 1 Variables ----
 # WM_WFC2 : Difficulty of Familial Responsibilities
+dsi$WM_WFC10R <- as.numeric(revalue(dsi$WM_WFC10R, resToValueAgreeance))
+qplot(dsi$WM_WFC10R, xlab = "Familial Pressure", ylab = "Number of Individuals in Each Bin", bins = 5)
+
+fam_wgagg <- aggregate(dsi$WM_WFC10R, list(dsi$WGID), mean)
+wgAgg$WM_WFC2 <- fam_wgagg$x
+qplot(wgAgg$WM_WFC2, xlim=c(1,5), 
+      xlab = "Average Work/Family Pressure by Workgroup",
+      ylab = "Number of workgroups in each bin",
+      binwidth=0.05)
 
 # WM_CWH1 : Choice of vacation time
+dsi$WM_CWH1R
 # ---- Level 2 Variables ----
 
 # ---- Sidetrack : JSAT HeatMap ----
 #Looking at various data in the WFHS set regarding job satisfaction
 
 jsat <- wfhs[c("WM_JSAT1R","WM_JSAT2R","WM_JSAT3R")]
-resToValueJSAT <- c("(1) STRONGLY DISAGREE"   = 1, 
+resToValueAgreeance <- c("(1) STRONGLY DISAGREE"   = 1, 
                     "(2) DISAGREE"         = 2,
                     "(3) NEITHER"          = 3,
                     "(4) AGREE"            = 4,
                     "(5) STRONGLY AGREE"   = 5)
 
 #Converts response codes to their integer equivalents
-jsat$WM_JSAT1R <- as.numeric(revalue(jsat$WM_JSAT1R, resToValueJSAT))
-jsat$WM_JSAT2R <- as.numeric(revalue(jsat$WM_JSAT2R, resToValueJSAT))
-jsat$WM_JSAT3R <- as.numeric(revalue(jsat$WM_JSAT3R, resToValueJSAT))
+jsat$WM_JSAT1R <- as.numeric(revalue(jsat$WM_JSAT1R, resToValueAgreeance))
+jsat$WM_JSAT2R <- as.numeric(revalue(jsat$WM_JSAT2R, resToValueAgreeance))
+jsat$WM_JSAT3R <- as.numeric(revalue(jsat$WM_JSAT3R, resToValueAgreeance))
 
 #creates correlation matrix of the various measures
 cormat <- round(cor(ewb),3)
