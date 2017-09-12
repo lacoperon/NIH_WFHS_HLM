@@ -15,7 +15,7 @@ library(ggplot2)
 # Initial Plotting of the Response Variable, EM_DIST1,
 # which measures how often employees feel so sad that nothing can cheer them up
 
-dsi <- wfhs[c("WGID","EM_DIST1R", "WM_WFC10R","WM_CWH1R")]
+dsi <- wfhs[c("WGID","EM_DIST1R", "WM_WFC1R","WM_CWH1R")]
 
 resToValueEM <- c("(1) NONE OF THE TIME"     = 1,
                   "(2) A LITTLE OF THE TIME" = 2,
@@ -48,12 +48,12 @@ qplot(wgAgg$EM_DIST1R, xlim=c(1,5),
 
 # ---- Level 1 Variables ----
 # WM_WFC2 : Difficulty of Familial Responsibilities
-dsi$WM_WFC10R <- as.numeric(revalue(dsi$WM_WFC10R, resToValueAgreeance))
-qplot(dsi$WM_WFC10R, xlab = "Familial Pressure", ylab = "Number of Individuals in Each Bin", bins = 5)
+dsi$WM_WFC1R <- as.numeric(revalue(dsi$WM_WFC1R, resToValueAgreeance))
+qplot(dsi$WM_WFC1R, xlab = "Familial Pressure", ylab = "Number of Individuals in Each Bin", bins = 5)
 
-fam_wgagg <- aggregate(dsi$WM_WFC10R, list(dsi$WGID), mean)
-wgAgg$WM_WFC2 <- fam_wgagg$x
-qplot(wgAgg$WM_WFC2, xlim=c(1,5), 
+fam_wgagg <- aggregate(dsi$WM_WFC1R, list(dsi$WGID), mean)
+wgAgg$WM_WFC1R <- fam_wgagg$x
+qplot(wgAgg$WM_WFC1R, xlim=c(1,5), 
       xlab = "Average Work/Family Pressure by Workgroup",
       ylab = "Number of workgroups in each bin",
       binwidth=0.05)
@@ -67,10 +67,10 @@ dsi$WM_CWH1R
 
 jsat <- wfhs[c("WM_JSAT1R","WM_JSAT2R","WM_JSAT3R")]
 resToValueAgreeance <- c("(1) STRONGLY DISAGREE"   = 1, 
-                    "(2) DISAGREE"         = 2,
-                    "(3) NEITHER"          = 3,
-                    "(4) AGREE"            = 4,
-                    "(5) STRONGLY AGREE"   = 5)
+                         "(2) DISAGREE"         = 2,
+                         "(3) NEITHER"          = 3,
+                         "(4) AGREE"            = 4,
+                         "(5) STRONGLY AGREE"   = 5)
 
 #Converts response codes to their integer equivalents
 jsat$WM_JSAT1R <- as.numeric(revalue(jsat$WM_JSAT1R, resToValueAgreeance))
