@@ -4,6 +4,12 @@ library(plyr)
 library(dplyr)
 library(reshape2)
 library(ggplot2)
+library(descr)
+
+freq(wfhs$WGID)
+freq(wfhs$EM_DIST1R)
+
+# LOOK AT MORE EXAMPLE CODE; CAN MAKE CODE MUCH SIMPLER
 
   
 # Recall that response variable is EM_DIST1
@@ -31,6 +37,27 @@ resToValueAgreeance <- c("(1) STRONGLY DISAGREE"= 1,
 
 
 dsi$EM_DIST1R <- as.numeric(revalue(dsi$EM_DIST1R, resToValueEM))
+
+
+require(lattice)
+dotplot(reorder(dsi$WGID, dsi$EM_DIST1R) ~ dsi$EM_DIST1R, dsi, xlab = "EmDist", ylab = "School ID")
+
+cdata <- ddply(dsi, c("WGID"), summarise,
+               N    = sum(!is.na(dsi$EM_DIST1R)),
+               mean = mean(dsi$EM_DIST1R , na.rm=TRUE),
+               sd   = sd(dsi$EM_DIST1R, na.rm=TRUE),
+               se   = sd / sqrt(N))
+
+# reorder observations by mean math score
+cdata$WGID <- factor(cdata$WGID, levels = cdata$WGID[order(cdata$mean)])
+cdata$WGID 
+
+library(ggplot2)
+# generate plot
+p <- ggplot(cdata, aes(x=WGID, y=mean))
+p + geom_point() + 
+  geom_errorbar(aes(ymin=mean-se, ymax=mean+se), width=.1) + xlab("WGID") +
+  ylab("Mean EmDist Score")
 
 # Histogram of counts of various labels among individuals
 qplot(dsi$EM_DIST1R, xlab="Individual Distress Rankings", ylab="Count of Rank", bins=5)
@@ -92,9 +119,6 @@ ggplot(data = melted_cormat, aes(x=Var1, y=Var2, fill=value)) +
   theme(axis.text.x = element_text(angle = 45, vjust = 1, 
                                    size = 12, hjust = 1))+
   coord_fixed()
-
-
-
 
 
 
